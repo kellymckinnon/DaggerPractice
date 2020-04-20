@@ -9,22 +9,26 @@ import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestOptions;
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Singleton;
 import me.kellymckinnon.daggerpractice.R;
 
 @Module
 public class AppModule {
 
+  @Singleton
   @Provides
   static RequestOptions provideRequestOptions() {
     return RequestOptions.placeholderOf(R.drawable.white_background).error(R.drawable.white_background);
   }
 
   // RequestOptions is available bc it is provided above
+  @Singleton
   @Provides
   static RequestManager provideGlideInstance(Application application, RequestOptions requestOptions) {
     return Glide.with(application).setDefaultRequestOptions(requestOptions);
   }
 
+  @Singleton
   @Provides
   static Drawable provideAppDrawable(Application application) {
     return ContextCompat.getDrawable(application, R.drawable.logo);
