@@ -9,8 +9,15 @@ import javax.inject.Singleton;
 import me.kellymckinnon.daggerpractice.BaseApplication;
 
 @Singleton
-@Component(modules =
-    {AndroidSupportInjectionModule.class, ActivityBuildersModule.class, AppModule.class})
+@Component(
+    modules =
+        {
+            AndroidSupportInjectionModule.class,
+            ActivityBuildersModule.class,
+            AppModule.class,
+            ViewModelFactoryModule.class
+        }
+)
 public interface AppComponent extends AndroidInjector<BaseApplication> {
 
   @Component.Builder
