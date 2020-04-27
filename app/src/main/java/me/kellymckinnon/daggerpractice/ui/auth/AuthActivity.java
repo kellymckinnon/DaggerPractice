@@ -1,5 +1,6 @@
 package me.kellymckinnon.daggerpractice.ui.auth;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import dagger.android.support.DaggerAppCompatActivity;
 import javax.inject.Inject;
 import me.kellymckinnon.daggerpractice.R;
 import me.kellymckinnon.daggerpractice.models.User;
+import me.kellymckinnon.daggerpractice.ui.main.MainActivity;
 import me.kellymckinnon.daggerpractice.viewmodels.ViewModelProviderFactory;
 
 public class AuthActivity extends DaggerAppCompatActivity implements OnClickListener {
@@ -66,6 +68,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements OnClickList
             break;
           case AUTHENTICATED:
             showProgressBar(false);
+            onLoginSuccess();
             Log.d(TAG, "onChanged: LOGIN SUCCESS: " + userAuthResource.data.getEmail());
             break;
           case ERROR:
@@ -88,6 +91,11 @@ public class AuthActivity extends DaggerAppCompatActivity implements OnClickList
     } else {
       progressBar.setVisibility(View.GONE);
     }
+  }
+
+  private void onLoginSuccess() {
+    Intent intent = new Intent(this, MainActivity.class);
+    startActivity(intent);
   }
 
   private void setLogo() {
