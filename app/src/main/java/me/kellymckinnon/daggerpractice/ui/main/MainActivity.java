@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
@@ -52,6 +53,14 @@ public class MainActivity extends BaseActivity implements OnNavigationItemSelect
       case R.id.logout:
         sessionManager.logOut();
         return true;
+      case android.R.id.home: { // toolbar back arrow
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+          drawerLayout.closeDrawer(GravityCompat.START);
+          return true;
+        } else {
+          return false; // pass to Navigation to handle
+        }
+      }
     }
 
     return super.onOptionsItemSelected(item);
@@ -61,10 +70,14 @@ public class MainActivity extends BaseActivity implements OnNavigationItemSelect
   public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
     switch (menuItem.getItemId()) {
       case R.id.nav_profile:
-        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.profileScreen);
+        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.main, true).build();
+        Navigation.findNavController(this, R.id.nav_host_fragment)
+            .navigate(R.id.profileScreen, null, navOptions);
         break;
       case R.id.nav_posts:
-        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.postsScreen);
+        if (isValidDestination(R.id.postsScreen)) {
+          Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.postsScreen);
+        }
         break;
     }
 
@@ -72,4 +85,16 @@ public class MainActivity extends BaseActivity implements OnNavigationItemSelect
     drawerLayout.closeDrawer(GravityCompat.START);
     return true;
   }
+
+  private boolean isValidDestination(int destination) {
+    return destination != Navigation.findNavController(this, R.id.nav_host_fragment)
+        .getCurrentDestination().getId();
+  }
+
+  @Override
+  public boolean onSupportNavigateUp() {
+    return NavigationUI
+        .navigateUp(Navigation.findNavController(this, R.id.nav_host_fragment), drawerLayout);
+  }
+
 }
