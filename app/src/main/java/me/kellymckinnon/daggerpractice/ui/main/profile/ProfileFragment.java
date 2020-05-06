@@ -42,6 +42,7 @@ public class ProfileFragment extends DaggerFragment {
     email = view.findViewById(R.id.email);
     username = view.findViewById(R.id.username);
     website = view.findViewById(R.id.website);
+    subscribeObservers();
   }
 
   private void subscribeObservers() {
